@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auctions</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        function updateDateTime() {
+            var now = new Date();
+            var dateTimeString = now.toLocaleString();
+            document.getElementById('currentDateTime').innerText = dateTimeString;
+        }
+        setInterval(updateDateTime, 1000);
+    </script>
+</head>
+<body onload="updateDateTime()">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{{ url_for('index') }}">Auction App</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+                </li>
+            </ul>
+        </div>
+        <div class="ml-auto">
+            <span id="currentDateTime"></span>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1>Auctions</h1>
+
+        <!-- Search and Filter Form -->
+        <form method="GET" action="{{ url_for('auctions') }}" class="form-inline mb-3">
+            <input type="text" name="search" class="form-control mr-2" placeholder="Search auctions" value="{{ request.args.get('search', '') }}">
+            <select name="category" class="form-control mr-2">
+                <option value="">All Categories</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if request.args.get('category') == category.id %}selected{% endif %}>{{ category.name }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+
+        {% if not auctions.items %}
+            <p>No auctions available at the moment.</p>
+        {% else %}
+            <ul class="list-group">
+                {% for auction in auctions.items %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <a href="{{ url_for('auction_details', id=auction.id) }}">
+                                {% if auction.image_filename %}
+                                    <img src="{{ url_for('static', filename='images/' + auction.image_filename) }}" alt="{{ auction.title }}" class="img-thumbnail mr-2" style="width: 50px;">
+                                {% endif %}
+                                {{ auction.title }}
+                            </a>
+                            <span class="badge badge-info">{{ auction.status }}</span>
+                            <small>Ending in {{ auction.time_left }} hours</small>
+                        </div>
+                        {% if current_user.is_authenticated %}
+                            <div>
+                                <a href="{{ url_for('remove_auction', id=auction.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to remove this auction?')">Remove</a>
+                            </div>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <!-- Pagination -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center mt-3">
+                    {% if auctions.has_prev %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('auctions', page=auctions.prev_num) }}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% for page_num in auctions.iter_pages() %}
+                        <li class="page-item {% if page_num == auctions.page %}active{% endif %}">
+                            <a class="page-link" href="{{ url_for('auctions', page=page_num) }}">{{ page_num }}</a>
+                        </li>
+                    {% endfor %}
+                    {% if auctions.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('auctions', page=auctions.next_num) }}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+
+        <a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">Back to Home</a>
+    </div>
+</body>
+</html>

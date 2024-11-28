@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Watchlist</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        function updateDateTime() {
+            var now = new Date();
+            var dateTimeString = now.toLocaleString();
+            document.getElementById('currentDateTime').innerText = dateTimeString;
+        }
+        setInterval(updateDateTime, 1000);
+    </script>
+</head>
+<body onload="updateDateTime()">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{{ url_for('index') }}">Auction App</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+                </li>
+            </ul>
+        </div>
+        <div class="ml-auto">
+            <span id="currentDateTime"></span>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Your Watchlist</h1>
+
+        <!-- User's Watchlist Table -->
+        <div class="container mt-5">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Item</th>
+                            <th>Image</th>
+                            <th>Current Bid</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><a href="{{ url_for('auction_details', id=1) }}">Item 1</a></td>
+                            <td><img src="{{ url_for('static', filename='images/1.jpg') }}" alt="Item 1" class="img-thumbnail" style="width: 100px; height: auto;"></td>
+                            <td>$100.00</td>
+                            <td>
+                                <a href="{{ url_for('auction_details', id=1) }}" class="btn btn-primary btn-sm">View</a>
+                                <a href="#" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to remove this item from your watchlist?')">Remove</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><a href="{{ url_for('auction_details', id=2) }}">Item 2</a></td>
+                            <td><img src="{{ url_for('static', filename='images/2.jpg') }}" alt="Item 2" class="img-thumbnail" style="width: 100px; height: auto;"></td>
+                            <td>$150.00</td>
+                            <td>
+                                <a href="{{ url_for('auction_details', id=2) }}" class="btn btn-primary btn-sm">View</a>
+                                <a href="#" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to remove this item from your watchlist?')">Remove</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">Back to Home</a>
+    </div>
+
+    <!-- User Guide Section -->
+    <div class="container mt-5">
+        <h2>User Guide</h2>
+        <p>Welcome to the Your Watchlist page! Here are some tips to help you:</p>
+        <ul>
+            <li>Review the list of items you have added to your watchlist.</li>
+            <li>Click on the item title to view more details about the auction.</li>
+            <li>The <strong>Current Bid</strong> column shows the current highest bid for the item.</li>
+            <li>To view the auction details, click the <strong>View</strong> button.</li>
+            <li>To remove an item from your watchlist, click the <strong>Remove</strong> button and confirm the action.</li>
+            <li>To return to the home page, click the <strong>Back to Home</strong> button.</li>
+        </ul>
+    </div>
+</body>
+</html>

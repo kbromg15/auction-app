@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ auction.title }}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>{{ auction.title }}</h1>
+        {% if auction.image_filename %}
+            <img src="{{ url_for('static', filename='images/' + auction.image_filename) }}" alt="{{ auction.title }}" class="img-fluid">
+        {% endif %}
+        <p>{{ auction.description }}</p>
+        <p>Starting Bid: ${{ auction.starting_bid }}</p>
+        <p>Current Bid: ${{ auction.current_bid }}</p>
+        <p>Time Left: <span id="countdown"></span></p>
+        <p>Status: <span id="status">{{ 'Ended' if auction.end_time < datetime.utcnow() else 'Ongoing' }}</span></p>
+
+        {% if auction.end_time < datetime.utcnow() %}
+            <p id="expired_message">Sorry, this auction has ended. No more bids can be placed.</p>
+        {% else %}
+            <form id="bid_form" method="POST" action="{{ url_for('place_bid', id=auction.id) }}">
+                <div class="form-group">
+                    <label for="bid_amount">Place Your Bid</label>
+                    <input type="number" class="form-control" id="bid_amount" name="bid_amount" required min="{{ auction.current_bid + 1 }}">
+                </div>
+                <button type="submit" class="btn btn-primary">Place Bid</button>
+            </form>
+        {% endif %}
+
+        <!-- Bid history -->
+        <h3>Bid History</h3>
+        <ul>
+            {% for bid in auction.bids %}
+                <li>${{ bid.amount }} by {{ bid.bidder.username }} at {{ bid.timestamp }}</li>
+            {% endfor %}
+        </ul>
+
+        <!-- Share auction -->
+        <div class="mt-3">
+            <p>Share this auction:</p>
+            <a href="https://twitter.com/intent/tweet?url={{ request.url }}" class="btn btn-info" target="_blank">Twitter</a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url }}" class="btn btn-primary" target="_blank">Facebook</a>
+            <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.url }}" class="btn btn-secondary" target="_blank">LinkedIn</a>
+        </div>
+
+        <a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">Back to Auctions</a>
+    </div>
+
+    <script>
+        var endTime = new Date("{{ auction.end_time }}").getTime();
+        var countdownElement = document.getElementById("countdown");
+        var statusElement = document.getElementById("status");
+        var bidForm = document.getElementById("bid_form");
+        var expiredMessage = document.getElementById("expired_message");
+
+        var interval = setInterval(function() {
+            var now = new Date().getTime();
+            var distance = endTime - now;
+
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            countdownElement.innerHTML = hours + "h " + minutes + "m " + seconds + "s";
+
+            if (distance < 0) {
+                clearInterval(interval);
+                countdownElement.innerHTML = "EXPIRED";
+                statusElement.innerHTML = "Ended";
+                if (bidForm) bidForm.style.display = "none";
+                if (expiredMessage) expiredMessage.style.display = "block";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

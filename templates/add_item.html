@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Item</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        function updateDateTime() {
+            var now = new Date();
+            var dateTimeString = now.toLocaleString();
+            document.getElementById('currentDateTime').innerText = dateTimeString;
+        }
+        setInterval(updateDateTime, 1000);
+    </script>
+</head>
+<body onload="updateDateTime()">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{{ url_for('index') }}">Auction App</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+                </li>
+            </ul>
+        </div>
+        <div class="ml-auto">
+            <span id="currentDateTime"></span>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Add Item</h1>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control form-control-lg" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control form-control-lg" id="description" name="description" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="starting_bid">Starting Bid</label>
+                <input type="number" class="form-control form-control-lg" id="starting_bid" name="starting_bid" required min="1">
+            </div>
+            <div class="form-group">
+                <label for="image">Item Image</label>
+                <input type="file" class="form-control-file" id="image" name="image" accept="image/*">
+            </div>
+            <div class="form-group">
+                <label for="end_time">Auction End Time</label>
+                <input type="datetime-local" class="form-control form-control-lg" id="end_time" name="end_time" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Item</button>
+        </form>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">Back to Home</a>
+    </div>
+
+    <!-- User Guide Section -->
+    <div class="container mt-5">
+        <h2>User Guide</h2>
+        <p>Follow the steps below to add an item for auction:</p>
+        <ul>
+            <li>Enter the <strong>Title</strong> of the item in the first input field.</li>
+            <li>Provide a detailed <strong>Description</strong> of the item in the textarea.</li>
+            <li>Set the <strong>Starting Bid</strong> amount in the respective input field.</li>
+            <li>Upload an <strong>Image</strong> of the item by clicking the "Choose File" button.</li>
+            <li>Select the <strong>Auction End Time</strong> using the date and time picker.</li>
+            <li>Click the <strong>Add Item</strong> button to submit the form and add the item to the auction.</li>
+            <li>To return to the home page, click the <strong>Back to Home</strong> button.</li>
+        </ul>
+    </div>
+</body>
+</html>

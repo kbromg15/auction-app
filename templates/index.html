@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"> <!-- Set the character encoding for the document -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Set the viewport to make the website responsive -->
+    <title>Auction App</title> <!-- Set the title of the page -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> <!-- Include Bootstrap CSS for styling -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> <!-- Include custom CSS file -->
+</head>
+<body>
+    <div class="container"> <!-- Create a container for the content -->
+        <header>
+            <h1>Welcome to the Auction App!</h1> <!-- Heading for the page -->
+        </header>
+        <p>{{ message }}</p> <!-- Display a message dynamically -->
+
+        {% if current_user.is_authenticated %} <!-- Check if the user is authenticated -->
+            <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a> <!-- Link to log out -->
+            <a href="{{ url_for('add_item') }}" class="btn btn-primary">Add Item</a> <!-- Link to add an item -->
+            <a href="{{ url_for('auctions') }}" class="btn btn-secondary">View Auctions</a> <!-- Link to view auctions -->
+            <a href="{{ url_for('bids') }}" class="btn btn-info">Your Bids</a> <!-- Link to view user's bids -->
+            <a href="{{ url_for('sales') }}" class="btn btn-warning">Your Sales</a> <!-- Link to view user's sales -->
+            <a href="{{ url_for('watchlist') }}" class="btn btn-success">Your Watchlist</a> <!-- Link to view user's watchlist -->
+        {% else %} <!-- If the user is not authenticated -->
+            <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a> <!-- Link to log in -->
+            <a href="{{ url_for('register') }}" class="btn btn-secondary">Register</a> <!-- Link to register -->
+        {% endif %}
+    </div>
+    
+
+    <!-- User Guide Section -->
+    <div class="container mt-5">
+        <h2>User Guide</h2>
+        <p>Welcome to the Auction App! Here are some quick tips to get you started:</p>
+        <ul>
+            <li>If you are a new user, click on the <strong>Register</strong> button to create an account.</li>
+            <li>If you already have an account, click on the <strong>Login</strong> button to access your account.</li>
+            <li>Once logged in, you can add items for auction by clicking on the <strong>Add Item</strong> button.</li>
+            <li>To view all available auctions, click on the <strong>View Auctions</strong> button.</li>
+            <li>You can view your bids, sales, and watchlist by clicking on the respective buttons.</li>
+            <li>To log out, click on the <strong>Logout</strong> button.</li>
+        </ul>
+    </div>
+
+    <main>
+        {% block main %}{% endblock %}
+    </main>
+    <footer>
+        <p>&copy; {{ current_year }} My Website. All rights reserved.</p>
+        <p>Contact us: <a href="mailto:info@mywebsite.com">info@mywebsite.com</a></p>
+        <p>Follow us on 
+            <a href="https://twitter.com/mywebsite" aria-label="Twitter">Twitter</a>, 
+            <a href="https://facebook.com/mywebsite" aria-label="Facebook">Facebook</a>, 
+            <a href="https://instagram.com/mywebsite" aria-label="Instagram">Instagram</a>
+        </p>
+    </footer>
+
+
+</body>
+</html>

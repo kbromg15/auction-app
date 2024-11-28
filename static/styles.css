@@ -1,0 +1,118 @@
+/* Add your custom styles here */
+body {
+    background-color: #f8f9fa; /* Set the background color */
+    font-family: Arial, sans-serif; /* Set the font family */
+    line-height: 1.6; /* Improve line spacing for better readability */
+}
+
+.container {
+    margin-top: 20px;
+    padding: 20px; /* Add padding around the container */
+    background-color: white; /* Add background color to the container for contrast */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+}
+
+h1 {
+    color: #343a40; /* Set the color of h1 elements */
+    font-size: 2rem; /* Increase the font size for headings */
+    margin-bottom: 20px; /* Add space below the heading */
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    border-radius: 5px; /* Rounded corners for buttons */
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3; /* Darken the button on hover */
+    border-color: #0056b3;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #5a6268;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    border-radius: 5px;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    border-radius: 5px;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    border-radius: 5px;
+}
+
+.btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    border-radius: 5px;
+}
+
+.btn-light {
+    background-color: #f8f9fa;
+    border-color: #f8f9fa;
+    border-radius: 5px;
+}
+
+.btn-dark {
+    background-color: #343a40;
+    border-color: #343a40;
+    border-radius: 5px;
+}
+
+.btn-link {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.btn-outline-primary {
+    color: #007bff;
+    border-color: #007bff;
+    border-radius: 5px;
+}
+
+.btn-outline-primary:hover {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.form-control {
+    padding: 10px; /* Add padding for better spacing */
+    border-radius: 4px;
+}
+
+a {
+    color: #007bff; /* Set color for links */
+}
+
+a:hover {
+    text-decoration: underline; /* Add underline effect on hover */
+}
+
+body {
+    padding-top: 56px;
+}
+
+.container {
+    max-width: 600px;
+}
